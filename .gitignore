@@ -1,0 +1,21 @@
+# secrets and local files
+.env
+*.env.local
+storage/*
+!storage/.gitkeep
+
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+
+# node
+node_modules/
+dist/
+
+# os / editor
+.DS_Store
+.idea/
+.vscode/

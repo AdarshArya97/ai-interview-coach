@@ -1,0 +1,17 @@
+# Versions are left open on purpose. After the first successful install,
+# run `pip freeze` and pin the versions that worked.
+fastapi
+uvicorn[standard]
+sqlalchemy>=2.0
+psycopg[binary]
+pgvector
+alembic
+pydantic>=2.0
+pydantic-settings
+pyjwt
+passlib[bcrypt]
+python-multipart
+pdfplumber
+langgraph
+httpx
+pytest

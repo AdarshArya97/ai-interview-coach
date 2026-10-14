@@ -1,0 +1,6 @@
+# One entry per source. Record the license before adding anything to the knowledge base.
+sources:
+  - name: example-source
+    url: https://example.com/docs
+    license: "CHECK LICENSE BEFORE USE"
+    topic: python
