@@ -24,6 +24,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
+      - ./backend:/app
       - ./storage:/app/storage
 
   frontend:
@@ -34,6 +35,9 @@ services:
       - backend
     ports:
       - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
 
   # Optional later: a langfuse service for tracing.
 
