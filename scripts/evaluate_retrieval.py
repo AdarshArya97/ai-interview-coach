@@ -1,4 +1,3 @@
-
 """Evaluate retrieval quality using labeled subtopics."""
 
 import json
@@ -22,6 +21,18 @@ def recall_at_k(
 
     found = set(retrieved_subtopics[:k])
     return len(relevant_subtopics & found) / len(relevant_subtopics)
+
+
+def reciprocal_rank(
+    relevant_subtopics: set[str],
+    retrieved_subtopics: list[str],
+) -> float:
+    """Return reciprocal rank of the first relevant result."""
+    for rank, subtopic in enumerate(retrieved_subtopics, start=1):
+        if subtopic in relevant_subtopics:
+            return 1.0 / rank
+
+    return 0.0
 
 
 def main():
@@ -51,18 +62,26 @@ def main():
                 role="ml_engineer",
             )
 
-            retrieved = [chunk.subtopic for chunk in chunks if chunk.subtopic]
+            retrieved = [
+                chunk.subtopic
+                for chunk in chunks
+                if chunk.subtopic
+            ]
 
             r3 = recall_at_k(expected, retrieved, 3)
             r5 = recall_at_k(expected, retrieved, 5)
+            rr = reciprocal_rank(expected, retrieved)
 
             result = {
                 "query": query,
                 "expected_subtopics": sorted(expected),
                 "retrieved_subtopics": retrieved,
-                "retrieved_chunk_ids": [chunk.id for chunk in chunks],
+                "retrieved_chunk_ids": [
+                    chunk.id for chunk in chunks
+                ],
                 "recall_at_3": round(r3, 4),
                 "recall_at_5": round(r5, 4),
+                "reciprocal_rank": round(rr, 4),
             }
             results.append(result)
 
@@ -70,17 +89,20 @@ def main():
             print(f"Expected: {sorted(expected)}")
             print(f"Retrieved: {retrieved}")
             print(f"Recall@3: {r3:.2f} | Recall@5: {r5:.2f}")
+            print(f"Reciprocal Rank: {rr:.2f}")
 
     finally:
         db.close()
 
     avg_r3 = sum(r["recall_at_3"] for r in results) / len(results)
     avg_r5 = sum(r["recall_at_5"] for r in results) / len(results)
+    mrr = sum(r["reciprocal_rank"] for r in results) / len(results)
 
     report = {
         "query_count": len(results),
         "recall_at_3": round(avg_r3, 4),
         "recall_at_5": round(avg_r5, 4),
+        "mrr": round(mrr, 4),
         "query_results": results,
     }
 
@@ -94,6 +116,7 @@ def main():
     print(f"Queries evaluated: {len(results)}")
     print(f"Mean Recall@3: {avg_r3:.2%}")
     print(f"Mean Recall@5: {avg_r5:.2%}")
+    print(f"Mean Reciprocal Rank (MRR): {mrr:.4f}")
     print(f"Results saved to: {RESULTS_FILE}")
 
 
