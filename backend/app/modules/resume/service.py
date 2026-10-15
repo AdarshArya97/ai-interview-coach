@@ -2,6 +2,7 @@
 """Orchestrates resume parsing, skill matching, and AI feedback."""
 
 import json
+import logging
 
 from pydantic import ValidationError
 
@@ -17,6 +18,9 @@ from app.modules.resume.schemas import (
     ResumeAnalysisResult,
 )
 from app.modules.resume.scoring import calculate_match
+
+
+logger = logging.getLogger(__name__)
 
 
 class ResumeAnalysisError(Exception):
@@ -39,12 +43,10 @@ class ResumeAnalysisService:
             raise ResumeAnalysisError(str(exc)) from exc
 
         # 2. Calculate deterministic skill coverage.
-        # A job description gives a more meaningful comparison than
-        # the job title alone.
         job_text = request.job_description or request.job_role
         match = calculate_match(resume_text, job_text)
 
-        # 3. Ask Gemini for qualitative feedback.
+        # 3. Build the prompt and request AI feedback.
         prompt = build_resume_analysis_prompt(
             resume_text=resume_text,
             job_role=request.job_role,
@@ -58,6 +60,11 @@ class ResumeAnalysisService:
                 json_mode=True,
             )
         except LLMError as exc:
+            # Log the underlying provider error for debugging.
+            logger.error(
+                "Gemini resume analysis failed: %s",
+                exc,
+            )
             raise ResumeAnalysisError(
                 "The AI provider could not complete resume analysis."
             ) from exc
@@ -65,6 +72,7 @@ class ResumeAnalysisService:
         # 4. Parse and validate Gemini's JSON response.
         try:
             feedback = json.loads(raw_response)
+
             if not isinstance(feedback, dict):
                 raise ValueError("Expected a JSON object.")
 
@@ -85,8 +93,17 @@ class ResumeAnalysisService:
 
             return ResumeAnalysisResult.model_validate(result_data)
 
-        except (json.JSONDecodeError, KeyError, TypeError, ValueError,
-                ValidationError) as exc:
+        except (
+            json.JSONDecodeError,
+            KeyError,
+            TypeError,
+            ValueError,
+            ValidationError,
+        ) as exc:
+            logger.error(
+                "Invalid resume analysis response: %s",
+                exc,
+            )
             raise ResumeAnalysisError(
                 "The AI returned an invalid resume analysis. Please retry."
             ) from exc
