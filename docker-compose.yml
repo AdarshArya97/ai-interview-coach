@@ -1,3 +1,4 @@
+
 services:
   db:
     image: pgvector/pgvector:pg16
@@ -10,14 +11,15 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-coach}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-coach} -d ${POSTGRES_DB:-coach}"]
       interval: 5s
       timeout: 5s
       retries: 10
 
   backend:
     build: ./backend
-    env_file: .env
+    env_file:
+      - .env
     depends_on:
       db:
         condition: service_healthy
@@ -26,6 +28,8 @@ services:
     volumes:
       - ./backend:/app
       - ./storage:/app/storage
+      - ./knowledge_base:/app/knowledge_base
+      - ./scripts:/app/scripts
 
   frontend:
     build: ./frontend
@@ -39,7 +43,7 @@ services:
       - ./frontend:/app
       - /app/node_modules
 
-  # Optional later: a langfuse service for tracing.
+# Optional later: add a Langfuse service for tracing.
 
 volumes:
   pgdata:
