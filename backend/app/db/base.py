@@ -1,1 +1,5 @@
-"""backend/app/db/base.py: TODO implement."""
+from sqlalchemy.orm import DeclarativeBase
+
+
+class Base(DeclarativeBase):
+    pass
