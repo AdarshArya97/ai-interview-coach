@@ -2,13 +2,16 @@
 """Skill extraction and deterministic resume-to-job matching."""
 
 import json
+import re
 from pathlib import Path
 
 
 TAXONOMY_PATH = Path(__file__).with_name("skills_taxonomy.json")
+ROLES_PATH = Path(__file__).with_name("roles.json")
 
 
 def load_skill_taxonomy() -> dict[str, list[str]]:
+    """Load canonical skills and their aliases."""
     with TAXONOMY_PATH.open("r", encoding="utf-8") as file:
         taxonomy = json.load(file)
 
@@ -26,8 +29,6 @@ def extract_skills(
     taxonomy: dict[str, list[str]] | None = None,
 ) -> list[str]:
     """Return canonical skills found in text using whole-word matching."""
-    import re
-
     if taxonomy is None:
         taxonomy = load_skill_taxonomy()
 
@@ -37,6 +38,7 @@ def extract_skills(
     for canonical, aliases in taxonomy.items():
         for alias in aliases:
             pattern = rf"(?<!\w){re.escape(alias.lower())}(?!\w)"
+
             if re.search(pattern, normalized_text):
                 found.append(canonical)
                 break
@@ -49,7 +51,7 @@ def calculate_match(
     job_text: str,
     taxonomy: dict[str, list[str]] | None = None,
 ) -> dict:
-    """Compare detected skills and calculate a transparent match score."""
+    """Compare detected resume skills against skills in a job description."""
     resume_skills = set(extract_skills(resume_text, taxonomy))
     required_skills = set(extract_skills(job_text, taxonomy))
 
@@ -65,6 +67,57 @@ def calculate_match(
     return {
         "resume_skills": sorted(resume_skills),
         "required_skills": sorted(required_skills),
+        "matched_skills": matched,
+        "missing_skills": missing,
+        "match_score": score,
+    }
+
+
+def load_role_skills() -> dict[str, list[str]]:
+    """Load default required skills for supported job roles."""
+    with ROLES_PATH.open("r", encoding="utf-8") as file:
+        roles = json.load(file)
+
+    return {
+        role.strip().lower(): [
+            skill.strip().lower() for skill in skills
+        ]
+        for role, skills in roles.items()
+    }
+
+
+def calculate_match_against_skills(
+    resume_text: str,
+    required_skills: list[str],
+    taxonomy: dict[str, list[str]] | None = None,
+) -> dict:
+    """Compare detected resume skills against an explicit skill list."""
+    if taxonomy is None:
+        taxonomy = load_skill_taxonomy()
+
+    resume_skills = set(extract_skills(resume_text, taxonomy))
+    required = {skill.strip().lower() for skill in required_skills}
+
+    # Reject skills that are not defined in the canonical taxonomy.
+    unknown_skills = required - set(taxonomy)
+
+    if unknown_skills:
+        raise ValueError(
+            f"Unknown canonical skills: {sorted(unknown_skills)}"
+        )
+
+    matched = sorted(resume_skills & required)
+    missing = sorted(required - resume_skills)
+
+    score = (
+        round(len(matched) / len(required) * 100, 2)
+        if required
+        else 0.0
+    )
+
+    return {
+        "resume_skills": sorted(resume_skills),
+        "required_skills": sorted(required),
         "matched_skills": matched,
         "missing_skills": missing,
         "match_score": score,
