@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     gemini_api_key: str = ""
     gemini_model: str = "gemini-3.8-flash"
     llm_timeout_seconds: float = 60.0
-
+    embedding_model: str = "gemini-embedding-001"
+    embedding_dimensions: int = 768
 
 settings = Settings()
