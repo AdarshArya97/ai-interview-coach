@@ -1,4 +1,3 @@
-
 """FastAPI endpoints for resume analysis."""
 
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile, status
@@ -46,6 +45,13 @@ async def analyze_resume(
                 detail="Resume PDF must be 10 MB or smaller.",
             )
 
+        # Check for a PDF header near the beginning of the file.
+        if b"%PDF-" not in pdf_bytes[:1024]:
+            raise HTTPException(
+                status_code=400,
+                detail="The uploaded file is not a valid PDF.",
+            )
+
         request = ResumeAnalysisRequest(
             job_role=job_role,
             job_description=job_description,
@@ -58,5 +64,6 @@ async def analyze_resume(
             status_code=422,
             detail=str(exc),
         ) from exc
+
     finally:
         await file.close()

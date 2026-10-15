@@ -17,7 +17,11 @@ from app.modules.resume.schemas import (
     ResumeAnalysisRequest,
     ResumeAnalysisResult,
 )
-from app.modules.resume.scoring import calculate_match
+from app.modules.resume.scoring import (
+    calculate_match,
+    calculate_match_against_skills,
+    load_role_skills,
+)
 
 
 logger = logging.getLogger(__name__)
@@ -43,8 +47,30 @@ class ResumeAnalysisService:
             raise ResumeAnalysisError(str(exc)) from exc
 
         # 2. Calculate deterministic skill coverage.
-        job_text = request.job_description or request.job_role
-        match = calculate_match(resume_text, job_text)
+        if request.job_description and request.job_description.strip():
+            # Use the supplied job description when available.
+            match = calculate_match(
+                resume_text,
+                request.job_description,
+            )
+        else:
+            # Otherwise, use the configured skills for the selected role.
+            role_skills = load_role_skills()
+            required_skills = role_skills.get(
+                request.job_role.strip().lower()
+            )
+
+            if required_skills is None:
+                raise ResumeAnalysisError(
+                    "This job role has no default skill profile. "
+                    "Please provide a job description for accurate "
+                    "skill matching."
+                )
+
+            match = calculate_match_against_skills(
+                resume_text,
+                required_skills,
+            )
 
         # 3. Build the prompt and request AI feedback.
         prompt = build_resume_analysis_prompt(
@@ -60,7 +86,6 @@ class ResumeAnalysisService:
                 json_mode=True,
             )
         except LLMError as exc:
-            # Log the underlying provider error for debugging.
             logger.error(
                 "Gemini resume analysis failed: %s",
                 exc,
