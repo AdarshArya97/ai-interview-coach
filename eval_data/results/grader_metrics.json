@@ -1,0 +1,126 @@
+{
+  "evaluation_type": "real_gemini_grader",
+  "model": "gemini",
+  "sample_count": 6,
+  "successful_count": 6,
+  "failed_count": 0,
+  "mae": 0.5833,
+  "label_accuracy": 1.0,
+  "note": "Metrics are calculated only on successful predictions. Results from this small dataset are an initial evaluation, not proof of production-level reliability.",
+  "results": [
+    {
+      "id": "g1",
+      "question": "What is overfitting?",
+      "answer": "Overfitting happens when a model learns training data too closely, including noise, and performs poorly on unseen data.",
+      "expected_score": 5.0,
+      "predicted_score": 5.0,
+      "score_error": 0.0,
+      "max_score": 5.0,
+      "expected_label": "correct",
+      "predicted_label": "correct",
+      "label_correct": true,
+      "strengths": [
+        "Accurately identifies that the model learns the training data too closely.",
+        "Mentions the inclusion of noise.",
+        "Correctly explains the consequence of performing poorly on unseen data."
+      ],
+      "missing_concepts": [],
+      "feedback": "The candidate provided an accurate and concise definition of overfitting that aligns completely with the reference answer."
+    },
+    {
+      "id": "g2",
+      "question": "What is overfitting?",
+      "answer": "Overfitting is when a model performs well on training data but poorly on unseen data.",
+      "expected_score": 4.0,
+      "predicted_score": 4.0,
+      "score_error": 0.0,
+      "max_score": 5.0,
+      "expected_label": "correct",
+      "predicted_label": "correct",
+      "label_correct": true,
+      "strengths": [
+        "Accurately defines overfitting as good performance on training data and poor performance on unseen data."
+      ],
+      "missing_concepts": [
+        "Did not explicitly mention that the model learns noise or details from the training data too closely."
+      ],
+      "feedback": "The candidate provided a concise and accurate definition of overfitting regarding its practical symptoms. While it missed the underlying mechanism of learning noise, the core concept is well understood."
+    },
+    {
+      "id": "g3",
+      "question": "What is overfitting?",
+      "answer": "Overfitting means the model is too simple to learn the patterns in the data.",
+      "expected_score": 1.0,
+      "predicted_score": 0.0,
+      "score_error": 1.0,
+      "max_score": 5.0,
+      "expected_label": "incorrect",
+      "predicted_label": "incorrect",
+      "label_correct": true,
+      "strengths": [],
+      "missing_concepts": [
+        "Learning the training data too closely",
+        "Capturing noise or random fluctuations",
+        "Poor performance on unseen or test data"
+      ],
+      "feedback": "The candidate described underfitting instead of overfitting. Overfitting happens when a model is too complex and learns the training data and noise too well, leading to poor generalization on unseen data, whereas a model that is too simple results in underfitting."
+    },
+    {
+      "id": "g4",
+      "question": "What is regularization in machine learning?",
+      "answer": "Regularization adds a penalty or constraint to discourage overly complex models and help reduce overfitting.",
+      "expected_score": 5.0,
+      "predicted_score": 5.0,
+      "score_error": 0.0,
+      "max_score": 5.0,
+      "expected_label": "correct",
+      "predicted_label": "correct",
+      "label_correct": true,
+      "strengths": [
+        "Accurately defines regularization as adding a penalty or constraint.",
+        "Correctly identifies the purpose of preventing overly complex models.",
+        "Correctly identifies the goal of reducing overfitting."
+      ],
+      "missing_concepts": [],
+      "feedback": "The candidate's answer is concise, accurate, and completely aligns with the reference answer."
+    },
+    {
+      "id": "g5",
+      "question": "What is regularization in machine learning?",
+      "answer": "It helps prevent overfitting, but I am not sure how it works.",
+      "expected_score": 3.0,
+      "predicted_score": 1.5,
+      "score_error": 1.5,
+      "max_score": 5.0,
+      "expected_label": "partially_correct",
+      "predicted_label": "partially_correct",
+      "label_correct": true,
+      "strengths": [
+        "Correctly identified that regularization helps prevent overfitting."
+      ],
+      "missing_concepts": [
+        "Did not explain how regularization works (adding a penalty or constraint to discourage excessive model complexity)."
+      ],
+      "feedback": "You correctly noted the main purpose of regularization (preventing overfitting), but you didn't explain the mechanism behind it, such as adding a penalty to model complexity."
+    },
+    {
+      "id": "g6",
+      "question": "What is regularization in machine learning?",
+      "answer": "Regularization increases model complexity so it memorizes the training data.",
+      "expected_score": 1.0,
+      "predicted_score": 0.0,
+      "score_error": 1.0,
+      "max_score": 5.0,
+      "expected_label": "incorrect",
+      "predicted_label": "incorrect",
+      "label_correct": true,
+      "strengths": [],
+      "missing_concepts": [
+        "Adds a penalty or constraint",
+        "Discourages excessive model complexity",
+        "Reduces overfitting"
+      ],
+      "feedback": "The candidate's answer is the exact opposite of regularization. Regularization reduces model complexity to prevent overfitting and memorization, whereas the candidate stated that it increases complexity and causes memorization."
+    }
+  ]
+}

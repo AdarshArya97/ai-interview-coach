@@ -1,1 +1,50 @@
-[]
+[
+  {
+    "id": "g1",
+    "question": "What is overfitting?",
+    "answer": "Overfitting happens when a model learns training data too closely, including noise, and performs poorly on unseen data.",
+    "expected_score": 5,
+    "max_score": 5,
+    "expected_label": "correct"
+  },
+  {
+    "id": "g2",
+    "question": "What is overfitting?",
+    "answer": "Overfitting is when a model performs well on training data but poorly on unseen data.",
+    "expected_score": 4,
+    "max_score": 5,
+    "expected_label": "correct"
+  },
+  {
+    "id": "g3",
+    "question": "What is overfitting?",
+    "answer": "Overfitting means the model is too simple to learn the patterns in the data.",
+    "expected_score": 1,
+    "max_score": 5,
+    "expected_label": "incorrect"
+  },
+  {
+    "id": "g4",
+    "question": "What is regularization in machine learning?",
+    "answer": "Regularization adds a penalty or constraint to discourage overly complex models and help reduce overfitting.",
+    "expected_score": 5,
+    "max_score": 5,
+    "expected_label": "correct"
+  },
+  {
+    "id": "g5",
+    "question": "What is regularization in machine learning?",
+    "answer": "It helps prevent overfitting, but I am not sure how it works.",
+    "expected_score": 3,
+    "max_score": 5,
+    "expected_label": "partially_correct"
+  },
+  {
+    "id": "g6",
+    "question": "What is regularization in machine learning?",
+    "answer": "Regularization increases model complexity so it memorizes the training data.",
+    "expected_score": 1,
+    "max_score": 5,
+    "expected_label": "incorrect"
+  }
+]
