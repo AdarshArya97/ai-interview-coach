@@ -30,6 +30,7 @@ services:
       - ./storage:/app/storage
       - ./knowledge_base:/app/knowledge_base
       - ./scripts:/app/scripts
+      - ./eval_data:/app/eval_data
 
   frontend:
     build: ./frontend

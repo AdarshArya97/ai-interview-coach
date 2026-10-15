@@ -1,1 +1,35 @@
-[]
+[
+  {
+    "query": "What is overfitting and how can regularization help?",
+    "relevant_subtopics": [
+      "overfitting",
+      "regularization"
+    ]
+  },
+  {
+    "query": "How does k-fold cross-validation evaluate a model?",
+    "relevant_subtopics": [
+      "cross_validation"
+    ]
+  },
+  {
+    "query": "What is the relationship between overfitting and the bias variance tradeoff?",
+    "relevant_subtopics": [
+      "overfitting",
+      "bias_variance"
+    ]
+  },
+  {
+    "query": "How do optimizers update model parameters during neural network training?",
+    "relevant_subtopics": [
+      "optimizers",
+      "backpropagation"
+    ]
+  },
+  {
+    "query": "Which metrics are useful for evaluating a classification model?",
+    "relevant_subtopics": [
+      "evaluation_metrics"
+    ]
+  }
+]

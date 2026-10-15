@@ -1,0 +1,120 @@
+{
+  "query_count": 5,
+  "recall_at_3": 1.0,
+  "recall_at_5": 1.0,
+  "query_results": [
+    {
+      "query": "What is overfitting and how can regularization help?",
+      "expected_subtopics": [
+        "overfitting",
+        "regularization"
+      ],
+      "retrieved_subtopics": [
+        "overfitting",
+        "regularization",
+        "bias_variance",
+        "training_problems",
+        "optimizers"
+      ],
+      "retrieved_chunk_ids": [
+        24,
+        25,
+        19,
+        11,
+        10
+      ],
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0
+    },
+    {
+      "query": "How does k-fold cross-validation evaluate a model?",
+      "expected_subtopics": [
+        "cross_validation"
+      ],
+      "retrieved_subtopics": [
+        "cross_validation",
+        "overfitting",
+        "evaluation_metrics",
+        "bias_variance",
+        "evaluation_of_rag"
+      ],
+      "retrieved_chunk_ids": [
+        21,
+        24,
+        22,
+        19,
+        15
+      ],
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0
+    },
+    {
+      "query": "What is the relationship between overfitting and the bias variance tradeoff?",
+      "expected_subtopics": [
+        "bias_variance",
+        "overfitting"
+      ],
+      "retrieved_subtopics": [
+        "bias_variance",
+        "overfitting",
+        "regularization",
+        "training_problems",
+        "class_imbalance"
+      ],
+      "retrieved_chunk_ids": [
+        19,
+        24,
+        25,
+        11,
+        20
+      ],
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0
+    },
+    {
+      "query": "How do optimizers update model parameters during neural network training?",
+      "expected_subtopics": [
+        "backpropagation",
+        "optimizers"
+      ],
+      "retrieved_subtopics": [
+        "optimizers",
+        "backpropagation",
+        "activation_functions",
+        "training_problems",
+        "transformers_and_attention"
+      ],
+      "retrieved_chunk_ids": [
+        10,
+        8,
+        7,
+        11,
+        12
+      ],
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0
+    },
+    {
+      "query": "Which metrics are useful for evaluating a classification model?",
+      "expected_subtopics": [
+        "evaluation_metrics"
+      ],
+      "retrieved_subtopics": [
+        "evaluation_metrics",
+        "class_imbalance",
+        "training_problems",
+        "cross_validation",
+        "overfitting"
+      ],
+      "retrieved_chunk_ids": [
+        22,
+        20,
+        11,
+        21,
+        24
+      ],
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0
+    }
+  ]
+}
